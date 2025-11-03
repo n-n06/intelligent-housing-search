@@ -1,4 +1,3 @@
-
 from sqlalchemy import (
     Column,
     String,
@@ -20,10 +19,11 @@ import uuid
 
 from src.db import Base
 
+
 class Location(Base):
     __tablename__ = "locations"
 
-    location_id = Column("location_id", UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    location_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     region_name = Column(String(255), nullable=False)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
@@ -33,9 +33,8 @@ class Location(Base):
     country = Column(String(255))
     postal_code = Column(Integer)
 
-    # Relationships
-    listings = relationship("Listing", back_populates="locations")
-    metrics = relationship("Metrics", back_populates="regions")
+    listings = relationship("Listing", back_populates="location")
+    metrics = relationship("Metrics", back_populates="region")
     preferred_by_users = relationship("UserPreferences", back_populates="preferred_region")
 
     def __repr__(self):
@@ -58,51 +57,48 @@ class Listing(Base):
     agent_name = Column(String(255))
     posted_at = Column(TIMESTAMP(False), server_default=func.now())
 
-    # Relationships
     location = relationship("Location", back_populates="listings")
-    favorites = relationship("FavoriteListings", back_populates="listings")
+    favorites = relationship("FavoriteListing", back_populates="listing")
 
     def __repr__(self):
         return f"<Listing(title={self.title}, price={self.price})>"
 
 
-class FavoriteListings(Base):
+class FavoriteListing(Base):
     __tablename__ = "favorite_listings"
 
     favorite_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.user_id"), nullable=False)
-    listing_id = Column(UUID(as_uuid=True), ForeignKey("listing.listing_id"), nullable=False)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    listing_id = Column(UUID(as_uuid=True), ForeignKey("listings.listing_id"), nullable=False)
     saved_at = Column(TIMESTAMP(False), server_default=func.now())
 
     __table_args__ = (
         UniqueConstraint("user_id", "listing_id", name="uq_user_listing"),
     )
 
-    # Relationships
     listing = relationship("Listing", back_populates="favorites")
 
     def __repr__(self):
-        return f"<FavoriteListings(user_id={self.user_id}, listing_id={self.listing_id})>"
+        return f"<FavoriteListing(user_id={self.user_id}, listing_id={self.listing_id})>"
 
 
 class UserPreferences(Base):
     __tablename__ = "user_preferences"
 
     preferences_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.user_id"), nullable=False)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     max_price = Column(Float)
     min_rooms = Column(Integer)
-    preferred_region_id = Column(UUID(as_uuid=True), ForeignKey("location.location_id"))
+    preferred_region_id = Column(UUID(as_uuid=True), ForeignKey("locations.location_id"))
     updated_at = Column(TIMESTAMP(False), server_default=func.now())
 
-    # Relationships
     preferred_region = relationship("Location", back_populates="preferred_by_users")
 
     def __repr__(self):
         return f"<UserPreferences(user_id={self.user_id}, max_price={self.max_price})>"
 
 
-class DataSources(Base):
+class DataSource(Base):
     __tablename__ = "data_sources"
 
     data_source_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -112,11 +108,10 @@ class DataSources(Base):
     source_params = Column(JSONB)
     last_scraped_at = Column(TIMESTAMP)
 
-    # Relationships
     metrics = relationship("Metrics", back_populates="source")
 
     def __repr__(self):
-        return f"<DataSources(source_name={self.source_name}, type={self.source_type})>"
+        return f"<DataSource(source_name={self.source_name}, type={self.source_type})>"
 
 
 class Metrics(Base):
@@ -127,7 +122,7 @@ class Metrics(Base):
         String(50),
         CheckConstraint("metric_type IN ('Market', 'Demographic', 'Environmental')"),
     )
-    region_id = Column(UUID(as_uuid=True), ForeignKey("location.location_id"), nullable=False)
+    region_id = Column(UUID(as_uuid=True), ForeignKey("locations.location_id"), nullable=False)
     metric_value = Column(Numeric(15, 5), nullable=False)
     metric_data = Column(JSONB)
     source_id = Column(UUID(as_uuid=True), ForeignKey("data_sources.data_source_id"))
@@ -135,9 +130,8 @@ class Metrics(Base):
     effective_to = Column(TIMESTAMP)
     is_current = Column(Boolean, server_default="TRUE")
 
-    # Relationships
     region = relationship("Location", back_populates="metrics")
-    source = relationship("DataSources", back_populates="metrics")
+    source = relationship("DataSource", back_populates="metrics")
 
     def __repr__(self):
         return f"<Metrics(metric_type={self.metric_type}, value={self.metric_value})>"
