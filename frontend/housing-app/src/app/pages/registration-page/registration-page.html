@@ -1,0 +1,63 @@
+<section id="reg-page-section">
+    <form
+      class="reg-form"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+    >
+      <img src="app-logo.svg" alt="logo" width="64">
+      <h1 class="reg-h1">Welcome</h1>
+      <h2 class="reg-h2">Create account</h2>
+      <label class="reg-label">
+        First name
+        <input type="text" class="reg-input" formControlName="first_name" placeholder="First name" required>
+      </label>
+      <label class="reg-label">
+        Last name
+        <input type="text" class="reg-input" formControlName="last_name" placeholder="Last name" required >
+      </label>
+      <label class="reg-label">
+        Email
+        <input type="email" class="reg-input" formControlName="email" placeholder="Email" required>
+      </label>
+      <label class="reg-label">
+        Password
+        <input type="password" class="reg-input" formControlName="password" placeholder="Password" required>
+      </label>
+      <label class="reg-label">
+        Password
+        <input type="password" class="reg-input"  formControlName="confirm_password" placeholder="Repeat Password" required>
+      </label>
+
+      <button class="reg-button" type="submit">
+        @if (!isLoading) {
+          Register
+        } @else {
+          <span class="spinner"></span>
+        }
+      </button>
+
+
+
+      @if (this.registrationSuccess) {
+        <div [class]="
+        {
+            'reg-msg-green' : true,
+            'reg-msg-red' : false,
+        }">
+            {{ this.successMessage }}
+        </div>
+      } @else if (!registrationSuccess && errorMessages.length) {
+        <div [class]="
+        {
+            'reg-msg-green' : false,
+            'reg-msg-red' : true,
+        }">
+          @for (item of this.errorMessages; track $index) {
+            <span>{{item}}</span>
+          }
+
+        </div>
+      }
+
+    </form>
+  </section>

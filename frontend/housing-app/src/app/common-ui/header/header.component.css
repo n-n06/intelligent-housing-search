@@ -1,0 +1,76 @@
+header {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--dark-secondary);
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .header-icon {
+    padding: 0 20px;
+}
+
+header .header-icon:hover {
+    cursor: pointer;
+}
+
+
+.search-bar {
+    height: 32px;
+    width: 800px;
+    border-radius: 12px;
+    background-color: var(--dark);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.search-bar-container {
+    padding: 12px 0px;
+}
+
+.search-bar:focus {
+    border: 1px solid var(--primary);
+}
+
+.search-bar input {
+    color: var(--white);
+    background-color: transparent;
+    border: none;
+    margin-right: 24px;
+    width: 100%;
+}
+
+.search-bar input:focus {
+    outline: none;
+}
+
+.account-buttons {
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 12px;
+}
+
+.account-button  {
+    background-color: transparent;
+    color: white;
+    border: none;
+    font-size: 18px;
+    height: 56px;
+    padding: 0px 12px;
+    transition: all 0.2s ease-in;
+}
+
+.account-button:hover {
+    cursor: pointer;
+    background-color: var(--dark-secondary-hover);
+}
+
+.profile-image {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+}

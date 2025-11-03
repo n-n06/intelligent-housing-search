@@ -1,0 +1,42 @@
+<section id="login-page-section">
+  <form
+    class="login-form"
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+  >
+    <img src="app-logo.svg" alt="logo" width="64" >
+    <h1 class="login-h1">Welcome Back</h1>
+    <h2 class="login-h2">Login</h2>
+    <label class="login-label">
+      Email
+      <input type="email" class="login-input" formControlName="username" placeholder="Email">
+    </label>
+    <label class="login-label">
+      Password
+      <input type="password" class="login-input" formControlName="password" placeholder="Password">
+    </label>
+
+    <button class="login-button" type="submit" [disabled]="isLoading">
+      @if (!isLoading) {
+        Login
+      } @else {
+        <span class="spinner"></span>
+      }
+    </button>
+    <hr>
+    <span>Don't have an account? <a routerLink="../register" class="register-link">Sign Up</a></span>
+
+
+    @if (this.isLoginFailed && this.loginErrorMessages.length) {
+      <div [class]="
+      {
+          'login-msg-red' : true
+      }">
+        @for (item of loginErrorMessages; track $index) {
+          <span>{{item}}</span>
+        }
+      </div>
+    }
+
+  </form>
+</section>
