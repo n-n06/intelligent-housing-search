@@ -76,15 +76,8 @@ export class RegistrationPage {
         error: (err: any) => {
           this.isLoading = false;
           if (err.error) {
-            const errors = err.error;
-
-            for (const field in errors) {
-              if (Array.isArray(errors[field])) {
-                this.errorMessages.push(...errors[field]);
-              } else {
-                this.errorMessages.push(errors[field]);
-              }
-            }
+              const errorMessage = err.error.detail[0].msg;
+              this.errorMessages.push(errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1));
           } else {
             this.errorMessages.push('Registration failed. Please try again.');
           }

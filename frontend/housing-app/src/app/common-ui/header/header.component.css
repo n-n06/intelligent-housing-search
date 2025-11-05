@@ -1,7 +1,8 @@
 header {
     display: flex;
     flex-direction: row;
-    background-color: var(--dark-secondary);
+    /* color: #335c67; */
+    background-color: var(--primary);
     justify-content: space-between;
     align-items: center;
 }

@@ -1,11 +1,13 @@
 from typing import Any
 import uuid
 
-from fastapi import Request, Depends
+from fastapi import Request, Depends, status
+from fastapi.exceptions import HTTPException
 from fastapi_users import BaseUserManager, UUIDIDMixin
 from fastapi_users.db import SQLAlchemyUserDatabase
 from fastapi_users.exceptions import InvalidPasswordException
 
+from src.auth.exceptions import InvalidRegistrationError
 from src.auth.models import User
 from src.auth.schemas import UserCreate
 from src.auth.config import SECRET
@@ -24,12 +26,14 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
             user: UserCreate | User
     ) -> None:
         if len(password) < 8:
-            raise InvalidPasswordException(
-                reason="Password should be at least 8 characters long!"
+            raise InvalidRegistrationError(
+                loc=["body", "password"],
+                msg="Password should be at least 8 characters long."
             )
         if user.email.lower() in password.lower():
-            raise InvalidPasswordException(
-                reason="Password should not contain the email"
+            raise InvalidRegistrationError(
+                loc=["body", "password"],
+                msg="Password should not contain the email."
             )
         if any((
             password.isalpha(),
@@ -38,11 +42,11 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
             password.isnumeric(),
             password.isspace(),
         )):
-            raise InvalidPasswordException(
-                reason="Password should contain a mix of uppercase " + 
-                " and lowercase letters, numbers and symbols"
+            raise InvalidRegistrationError(
+                loc=["body", "password"],
+                msg="Password should contain a mix of uppercase " + 
+                "and lowercase letters, numbers and symbols"
             )
-
 
     async def on_after_register(
             self, user: User, request: Request | None = None
