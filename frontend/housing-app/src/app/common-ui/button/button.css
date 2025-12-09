@@ -1,0 +1,21 @@
+
+.button {
+    cursor: pointer;
+    font-size: 24px;
+    background-color: var(--primary);
+    margin: 20px 0;
+    width: 240px;
+    border-radius: 12px;
+    padding: 12px;
+    transition: all 0.2s ease-in-out;
+    border: 1px solid var(--white);
+    color: white;
+}
+
+.button:hover {
+    background-color: var(--primary-light);
+}
+
+.button:focus {
+    outline: 2px solid var(--dark-shadow);
+}

@@ -1,0 +1,53 @@
+
+.landing-splash-img {
+  position: absolute;
+  height: 67.5rem;
+  z-index: 1;
+  filter: brightness(30%);
+}
+
+section {
+  height: 64rem;
+  position: relative;
+}
+
+.landing-splash-cont {
+  color: var(--bg-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  position: relative;
+  height: 70%;
+}
+
+h1 {
+  font-size: 60px;
+}
+
+.landing-button-cont {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1.25rem;
+}
+
+.landing-button {
+  width: 16rem;
+  height: 4rem;
+  border-radius: 1rem;
+  background-color: var(--primary);
+  color: var(--black);
+  border: 1px solid var(--light-gray);
+  transition: all 0.1s ease-in-out;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.landing-button:hover {
+  filter: brightness(70%);
+  border-color: var(--secondary);
+
+  cursor: pointer;
+}

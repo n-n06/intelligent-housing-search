@@ -2,7 +2,7 @@ header {
     display: flex;
     flex-direction: row;
     /* color: #335c67; */
-    background-color: var(--primary);
+    background-color: var(--dark-third);
     justify-content: space-between;
     align-items: center;
 }
@@ -55,18 +55,23 @@ header .header-icon:hover {
 }
 
 .account-button  {
-    background-color: transparent;
-    color: white;
+    border-radius: 0.75rem;
+    background-color: var(--primary);
+    color: var(--black);
     border: none;
-    font-size: 18px;
-    height: 56px;
+    font-size: 14px;
+    height: 3rem;
+    width: 6rem;
+    margin: 0.25rem 0rem;
     padding: 0px 12px;
-    transition: all 0.2s ease-in;
+    transition: all 0.1s ease-in;
 }
 
 .account-button:hover {
-    cursor: pointer;
-    background-color: var(--dark-secondary-hover);
+  filter: brightness(70%);
+  border-color: var(--secondary);
+
+  cursor: pointer;
 }
 
 .profile-image {

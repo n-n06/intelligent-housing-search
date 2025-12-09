@@ -4,18 +4,17 @@
     flex-direction: column;
     align-items: center;
     height: 400px;
-    margin: 60px;
+    margin: 140px;
 }
 
 .login-form {
     border-radius: 24px;
-    border: 4px solid var(--primary-light);
+    border: 2px solid var(--light-gray);
     width: 600px;
     padding: 40px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 10px 10px 10px 10px var(--dark-shadow);
 }
 
 .login-h1 {
@@ -53,18 +52,16 @@
     width: 240px;
     border-radius: 12px;
     padding: 12px;
-    transition: all 0.2s ease-in-out;
-    border: 1px solid var(--white);
+    /* transition: all 0.2s ease-in-out; */
+    border: 1px solid var(--light-gray);
     color: white;
 }
 
 .login-button:hover {
-    background-color: var(--primary-light);
+    filter: brightness(70%);
+    border-color: var(--secondary);
 }
 
-.login-button:focus {
-    outline: 2px solid var(--dark-shadow);
-}
 
 hr {
     width: 260px;

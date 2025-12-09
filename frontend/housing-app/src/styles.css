@@ -5,7 +5,10 @@
 }
 
 :root {
-    --primary: 	#540b0e;
+    --bg-color: white;
+    --light-gray: 	#9a9898;
+
+    --primary: 	#ddd3d2;
     --primary-light: 	#900100;
     --secondary: #e09f3e;
     --secondary-light: #e094;
@@ -21,9 +24,9 @@
 }
 
 body {
-    background-color: var(--dark);
+    background-color: var(--bg-color);
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, Helvetica, sans-serif;
-    color: var(--white);
+    color: var(--black);
 }
 
 button {
