@@ -141,7 +141,6 @@ npm install
 ```
 ng serve
 ```
-
 ##### View the frontend
 Access the frontend by this address:
 ```
