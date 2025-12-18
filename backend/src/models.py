@@ -54,11 +54,10 @@ class Listing(Base):
         String(50),
         CheckConstraint("property_type IN ('Apartment', 'House', 'Commercial')"),
     )
-    agent_name = Column(String(255))
     posted_at = Column(TIMESTAMP(False), server_default=func.now())
 
     location = relationship("Location", back_populates="listings")
-    favorites = relationship("FavoriteListing", back_populates="listing")
+    favorites = relationship("FavoriteListing", back_populates="listings")
 
     def __repr__(self):
         return f"<Listing(title={self.title}, price={self.price})>"
@@ -129,6 +128,7 @@ class Metrics(Base):
     effective_from = Column(TIMESTAMP)
     effective_to = Column(TIMESTAMP)
     is_current = Column(Boolean, server_default="TRUE")
+    agent_name = Column(String(255))
 
     region = relationship("Location", back_populates="metrics")
     source = relationship("DataSource", back_populates="metrics")

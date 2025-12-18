@@ -24,6 +24,17 @@ services:
       - auth.env
     # volumes:
     #   - ./src:/app
+    #
+    #
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
 
 volumes:
   pgdata:
+  redis_data:

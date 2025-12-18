@@ -38,6 +38,7 @@
     padding: 12px;
     width: 400px;
     display: block;
+    border: 1px solid var(--light-gray);
 }
 
 .login-input:focus {
@@ -52,9 +53,9 @@
     width: 240px;
     border-radius: 12px;
     padding: 12px;
-    /* transition: all 0.2s ease-in-out; */
+    transition: all 0.1s ease-in-out;
     border: 1px solid var(--light-gray);
-    color: white;
+    color: var(--black);
 }
 
 .login-button:hover {
@@ -72,6 +73,7 @@ hr {
 .register-link {
     text-decoration: none;
     color: var(--primary);
+    transition: all 0.1s ease-in-out;
 }
 
 .register-link:hover {
