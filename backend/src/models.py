@@ -9,77 +9,104 @@ from sqlalchemy import (
     CheckConstraint,
     Boolean,
     Numeric,
-    UniqueConstraint,
     func,
 )
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.orm import relationship
-from geoalchemy2 import Geometry
 import uuid
 
 from src.db import Base
 
 
-class Location(Base):
-    __tablename__ = "locations"
+# class Location(Base):
+#     __tablename__ = "locations"
+#
+#     location_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+#     address = Column(String(512), nullable=False, unique=True)
+#
+#     region_name = Column(String(255), nullable=False)
+#     latitude = Column(Float, nullable=True)
+#     longitude = Column(Float, nullable=True)
+#     # geo_boundary = Column(Geometry(geometry_type="POLYGON", srid=4326))
+#     city = Column(String(255))
+#     country = Column(String(255))
+#
+#     listings = relationship("Listing", back_populates="location")
+#     metrics = relationship("Metrics", back_populates="region")
+#     preferred_by_users = relationship("UserPreferences", back_populates="preferred_region")
+#
+#     __table_args__ = (
+#         UniqueConstraint("city", "latitude", "longitude", name="uq_location_geo"),
+#     )
+#
+#     def __repr__(self):
+#         return f"<Location(region_name={self.region_name}, country={self.country})>"
+#
 
-    location_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    region_name = Column(String(255), nullable=False)
-    latitude = Column(Float, nullable=False)
-    longitude = Column(Float, nullable=False)
-    geo_boundary = Column(Geometry(geometry_type="POLYGON", srid=4326))
-    city = Column(String(255))
-    state = Column(String(255))
-    country = Column(String(255))
-    postal_code = Column(Integer)
+# class Listing(Base):
+#     __tablename__ = "listings"
+#
+#     listing_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+#     external_id = Column(String(32), nullable=False, unique=True)
+#
+#     title = Column(String(255), nullable=False)
+#     room_count = Column(Integer, nullable=False)
+#     area = Column(Float, nullable=False)
+#     description = Column(Text)
+#     price = Column(Float, nullable=False)
+#     posted_at = Column(TIMESTAMP(False), server_default=func.now())
+#
+#     location_id = Column(UUID(as_uuid=True), ForeignKey("locations.location_id"), nullable=False)
+#
+#     location = relationship("Location", back_populates="listings")
+#     favorites = relationship("FavoriteListing", back_populates="listings")
+#
+#     def __repr__(self):
+#         return f"<Listing(title={self.title}, price={self.price})>"
+#
+#
+# class FavoriteListing(Base):
+#     __tablename__ = "favorite_listings"
+#
+#     favorite_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+#     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+#     listing_id = Column(UUID(as_uuid=True), ForeignKey("listings.listing_id"), nullable=False)
+#     saved_at = Column(TIMESTAMP(False), server_default=func.now())
+#
+#     __table_args__ = (
+#         UniqueConstraint("user_id", "listing_id", name="uq_user_listing"),
+#     )
+#
+#     listing = relationship("Listing", back_populates="favorites")
+#
+#     def __repr__(self):
+#         return f"<FavoriteListing(user_id={self.user_id}, listing_id={self.listing_id})>"
+#
+#
 
-    listings = relationship("Listing", back_populates="location")
-    metrics = relationship("Metrics", back_populates="region")
-    preferred_by_users = relationship("UserPreferences", back_populates="preferred_region")
 
-    def __repr__(self):
-        return f"<Location(region_name={self.region_name}, country={self.country})>"
+class Metrics(Base):
+    __tablename__ = "metrics"
 
-
-class Listing(Base):
-    __tablename__ = "listings"
-
-    listing_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    title = Column(String(255), nullable=False)
-    description = Column(Text)
-    price = Column(Float, nullable=False)
-    location_id = Column(UUID(as_uuid=True), ForeignKey("locations.location_id"), nullable=False)
-    room_count = Column(Integer, nullable=False)
-    property_type = Column(
+    metric_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    metric_type = Column(
         String(50),
-        CheckConstraint("property_type IN ('Apartment', 'House', 'Commercial')"),
+        CheckConstraint("metric_type IN ('Market', 'Demographic', 'Environmental')"),
     )
-    posted_at = Column(TIMESTAMP(False), server_default=func.now())
+    region_id = Column(UUID(as_uuid=True), ForeignKey("locations.location_id"), nullable=False)
+    metric_value = Column(Numeric(15, 5), nullable=False)
+    metric_data = Column(JSONB)
+    source_id = Column(UUID(as_uuid=True), ForeignKey("data_sources.data_source_id"))
+    effective_from = Column(TIMESTAMP)
+    effective_to = Column(TIMESTAMP)
+    is_current = Column(Boolean, server_default="TRUE")
+    agent_name = Column(String(255))
 
-    location = relationship("Location", back_populates="listings")
-    favorites = relationship("FavoriteListing", back_populates="listings")
+    region = relationship("Location", back_populates="metrics")
+    source = relationship("DataSource", back_populates="metrics")
 
     def __repr__(self):
-        return f"<Listing(title={self.title}, price={self.price})>"
-
-
-class FavoriteListing(Base):
-    __tablename__ = "favorite_listings"
-
-    favorite_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
-    listing_id = Column(UUID(as_uuid=True), ForeignKey("listings.listing_id"), nullable=False)
-    saved_at = Column(TIMESTAMP(False), server_default=func.now())
-
-    __table_args__ = (
-        UniqueConstraint("user_id", "listing_id", name="uq_user_listing"),
-    )
-
-    listing = relationship("Listing", back_populates="favorites")
-
-    def __repr__(self):
-        return f"<FavoriteListing(user_id={self.user_id}, listing_id={self.listing_id})>"
-
+        return f"<Metrics(metric_type={self.metric_type}, value={self.metric_value})>"
 
 class UserPreferences(Base):
     __tablename__ = "user_preferences"
@@ -113,25 +140,3 @@ class DataSource(Base):
         return f"<DataSource(source_name={self.source_name}, type={self.source_type})>"
 
 
-class Metrics(Base):
-    __tablename__ = "metrics"
-
-    metric_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    metric_type = Column(
-        String(50),
-        CheckConstraint("metric_type IN ('Market', 'Demographic', 'Environmental')"),
-    )
-    region_id = Column(UUID(as_uuid=True), ForeignKey("locations.location_id"), nullable=False)
-    metric_value = Column(Numeric(15, 5), nullable=False)
-    metric_data = Column(JSONB)
-    source_id = Column(UUID(as_uuid=True), ForeignKey("data_sources.data_source_id"))
-    effective_from = Column(TIMESTAMP)
-    effective_to = Column(TIMESTAMP)
-    is_current = Column(Boolean, server_default="TRUE")
-    agent_name = Column(String(255))
-
-    region = relationship("Location", back_populates="metrics")
-    source = relationship("DataSource", back_populates="metrics")
-
-    def __repr__(self):
-        return f"<Metrics(metric_type={self.metric_type}, value={self.metric_value})>"

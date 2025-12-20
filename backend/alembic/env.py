@@ -11,6 +11,9 @@ print(sys.path)
 
 from src.db import settings
 from src.auth.models import User
+from src.models import UserPreferences, DataSource, Metrics
+from src.listings.models import Listing
+from src.locations.models import Location
 from src.db import Base
 
 from logging.config import fileConfig

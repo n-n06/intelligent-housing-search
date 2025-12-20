@@ -8,8 +8,6 @@ class Settings(BaseSettings):
     DB_NAME: str
     OPENWEATHER_API_KEY: str
     YANDEX_API_KEY: str
-    ARDAK_ADDRESS: str
-    ANELE_ADDRESS: str
 
     @property
     def db_url_async(self) -> str:

@@ -16,7 +16,7 @@ sys.path.insert(
 
 from src.auth.router import auth_router
 from src.geodata import state
-from src.geodata.router import geo_router, test_router
+from src.geodata.router import geo_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -44,7 +44,6 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(geo_router)
-app.include_router(test_router)
 
 if __name__ == '__main__':
     uvicorn.run("src.main:app", host='127.0.0.1', port=8000, reload=True)

@@ -12,21 +12,14 @@ sys.path.insert(
 
 from src.geodata.city_infra import get_nearby
 from src.geodata.weather import get_environment_data
-from src.geodata import state
 
 
 sem = asyncio.Semaphore(5)
 
-async def parse(page: int | None = None):
-    path = "https://krisha.kz/arenda/kvartiry/almaty-almalinskij/"
-    if page is not None:
-        path = path + f"?page={page}"
-        
-    async with sem:
-        async with state.session.get(path) as response:
-            response.raise_for_status()
-            html = await response.text()
-
+def parse(html: str):
+    """
+    Parses and HTML page into a JSON array of listings
+    """
 
     soup = BeautifulSoup(html, "html.parser")
 
@@ -34,6 +27,9 @@ async def parse(page: int | None = None):
     results = []
 
     for card in cards:
+        # id
+        external_id = card.get("data-id")
+
         # title 
         title_text = card.select_one(".a-card__title").get_text(strip=True)
 
@@ -41,6 +37,11 @@ async def parse(page: int | None = None):
         rooms = re.search(r"(\d+)-комнатная", title_text)
         area = re.search(r"([\d\.]+)\s*м²", title_text)
         floor = re.search(r"(\d+/\d+)\s*этаж", title_text)
+            
+        if rooms and rooms.group(0)[0].isdigit():
+            rooms = int(rooms.group(0)[0])
+        else:
+            rooms = 1
 
         # price!!
         price_raw = card.select_one(".a-card__price").get_text(" ", strip=True)
@@ -54,8 +55,10 @@ async def parse(page: int | None = None):
         district = parts[0] if len(parts) > 0 else None
 
         # street and house number (before " — …")
-        street_part = subtitle.split("—")[0]
-        street = street_part.split(",")[-1].strip()
+        # street_part = subtitle.split("—")[0]
+        # street = street_part.split(",")[-1].strip()
+
+        street = parts[1:][0] if len(parts) > 0 else None
 
         # nearby objec
         nearby = subtitle.split("—")[1].strip() if "—" in subtitle else None
@@ -80,8 +83,9 @@ async def parse(page: int | None = None):
 
         # final json
         data = {
+            "external_id": external_id,
             "title": title_text,
-            "rooms": rooms.group(0) if rooms else None,
+            "rooms": rooms,
             "area_m2": float(area.group(1)) if area else None,
             "floor": floor.group(1) if floor else None,
             "description": description,
