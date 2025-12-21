@@ -5,6 +5,7 @@ import { RegistrationPage } from './pages/registration-page/registration-page';
 import { canActivateAuth } from './auth/access.guard';
 import { HomePage } from './pages/home-page/home-page';
 import { PageNotFound } from './pages/page-not-found/page-not-found';
+import { ApartmentsComponent } from './pages/appartments/apartments.component';
 
 export const routes: Routes = [
     {
@@ -22,6 +23,10 @@ export const routes: Routes = [
             {
                 path: 'register',
                 component: RegistrationPage
+            },
+            {
+                path: 'apartments',
+                component: ApartmentsComponent
             },
             {
                 path: '**',

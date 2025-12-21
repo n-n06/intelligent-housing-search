@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="grid">
+      <div class="card" *ngFor="let a of apartments">
+        <div class="image-wrap">
+          <img [src]="a.photo.src" alt="" />
+          <span class="price">
+            {{ a.price.value | number }} {{ a.price.currency }}
+          </span>
+        </div>
+  
+        <div class="content">
+          <h3>{{ a.title }}</h3>
+  
+          <p class="location">
+            {{ a.location.district }},
+            {{ a.location.street }}
+          </p>
+  
+          <div class="meta">
+            <span>🛏 {{ a.rooms }}</span>
+            <span>📐 {{ a.area_m2 }} м²</span>
+            <span>🏢 {{ a.floor || '—' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
