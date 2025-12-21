@@ -2,7 +2,6 @@ import os
 import sys
 import re
 
-import asyncio
 from bs4 import BeautifulSoup
 
 sys.path.insert(
@@ -10,11 +9,6 @@ sys.path.insert(
     os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
 )
 
-from src.geodata.city_infra import get_nearby
-from src.geodata.weather import get_environment_data
-
-
-sem = asyncio.Semaphore(5)
 
 def parse(html: str):
     """
@@ -61,7 +55,6 @@ def parse(html: str):
         street = parts[1:][0] if len(parts) > 0 else None
 
         # nearby objec
-        nearby = subtitle.split("—")[1].strip() if "—" in subtitle else None
 
         # building information
         preview = card.select_one(".a-card__text-preview").get_text(" ", strip=True)
@@ -73,7 +66,6 @@ def parse(html: str):
                 complex_name = m.group(1)
 
         year = re.search(r"(\d{4})\s*г\.п\.", preview)
-        ceiling = re.search(r"потолки\s*([\d\.]+)", preview)
 
         # photo of appartment
         photo = card.select_one(".a-image__img")["src"]
@@ -85,27 +77,18 @@ def parse(html: str):
         data = {
             "external_id": external_id,
             "title": title_text,
-            "rooms": rooms,
-            "area_m2": float(area.group(1)) if area else None,
+            "room_count": rooms,
+            "area": float(area.group(1)) if area else None,
             "floor": floor.group(1) if floor else None,
             "description": description,
-            "price": {
-                "value": price_digits,
-                "currency": "KZT"
-            },
+            "price": price_digits,
             "location": {
-                "district": district,
-                "street": street,
-                "nearby": nearby
+                "region_name": district,
+                "address": street,
             },
-            "building": {
-                "complex": complex_name,
-                "year_built": int(year.group(1)) if year else None,
-                "ceiling_height_m": float(ceiling.group(1)) if ceiling else None
-            },
-            "photo": {
-                "src": photo
-            }
+            "complex": complex_name,
+            "year_built": int(year.group(1)) if year else None,
+            "photo": photo
         }
 
         results.append(data)
@@ -113,27 +96,27 @@ def parse(html: str):
     return results
 
 
-async def main():
-    results = await parse(page=2)
-    result = results[1]
-
-    address = result["location"]["street"]
-    weather_data = await get_environment_data(address)
-
-    coord = weather_data["coordinates"]
-    lat = coord["lat"]
-    lon = coord["lon"]
-
-    nearby = await get_nearby(lat, lon)
-
-
-    return {
-        "listing": result,
-        "weather": weather_data,
-        "nearby": nearby,
-    }
-
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
+# async def main():
+#     results = await parse(page=2)
+#     result = results[1]
+#
+#     address = result["location"]["street"]
+#     weather_data = await get_environment_data(address)
+#
+#     coord = weather_data["coordinates"]
+#     lat = coord["lat"]
+#     lon = coord["lon"]
+#
+#     nearby = await get_nearby(lat, lon)
+#
+#
+#     return {
+#         "listing": result,
+#         "weather": weather_data,
+#         "nearby": nearby,
+#     }
+#
+#
+#
+# if __name__ == "__main__":
+#     asyncio.run(main())

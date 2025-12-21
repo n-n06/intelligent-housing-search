@@ -1,3 +1,4 @@
+import uuid
 from sqlalchemy import (
     Column,
     String,
@@ -11,9 +12,12 @@ from sqlalchemy import (
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
-import uuid
+from sqlalchemy.dialects.postgresql import ENUM as PgEnum
+
 
 from src.db import Base
+from src.listings.schemas import ListingTypeDisplay
+
 
 class Listing(Base):
     __tablename__ = "listings"
@@ -21,11 +25,20 @@ class Listing(Base):
     listing_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     external_id = Column(String(32), nullable=False, unique=True)
 
+    type = Column(
+        PgEnum(ListingTypeDisplay, name="listing_type", create_type=False),
+        nullable=False,
+        index=True,
+    )
+
     title = Column(String(255), nullable=False)
     room_count = Column(Integer, nullable=False)
     area = Column(Float, nullable=False)
+    floor = Column(String(64), nullable=True)
     description = Column(Text)
     price = Column(Float, nullable=False)
+    year_built = Column(Integer, nullable=True)
+    complex = Column(String(128), nullable=True)
     posted_at = Column(TIMESTAMP(False), server_default=func.now())
 
     location_id = Column(UUID(as_uuid=True), ForeignKey("locations.location_id"), nullable=False)

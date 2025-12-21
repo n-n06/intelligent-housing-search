@@ -18,6 +18,7 @@ async def get_or_create_location(
         Location.latitude == latitude,
         Location.longitude == longitude,
         Location.city == city,
+        Location.address == address
     )
 
     result = await db.execute(stmt)
