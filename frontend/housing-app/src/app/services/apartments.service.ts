@@ -5,7 +5,7 @@ import { Apartment } from '../models/apartment.model';
 
 @Injectable({ providedIn: 'root' })
 export class ApartmentsService {
-  private url = 'objects.json';
+  private url = 'http://localhost:8000/listings/rent/almaly';
   // потом просто поменяешь на:
   // private url = 'https://api.example.com/apartments';
 

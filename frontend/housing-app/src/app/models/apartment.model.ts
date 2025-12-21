@@ -1,24 +1,16 @@
 export interface Apartment {
     external_id: string;
     title: string;
-    rooms: number;
-    area_m2: number;
+    room_count: number;
+    area: number;
     floor: string | null;
     description: string;
-    price: {
-      value: number;
-      currency: string;
-    };
+    price: number,
     location: {
-      district: string;
+      region: string;
       street: string;
-      nearby: string | null;
     };
-    building: {
-      complex: string | null;
-    };
-    photo: {
-      src: string;
-    };
+    complex: string | null;
+    photo: string;
   }
 

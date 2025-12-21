@@ -8,7 +8,7 @@ import { Apartment } from '../../models/apartment.model';
   selector: 'app-apartments',
   templateUrl: './apartments.component.html',
   styleUrl: './apartments.component.css',
-  imports: [CommonModule] // ← ВАЖНО
+  imports: [CommonModule] 
 })
 export class ApartmentsComponent {
   apartments: Apartment[] = [];
