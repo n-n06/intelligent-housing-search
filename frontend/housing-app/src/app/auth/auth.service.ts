@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { tap } from 'rxjs';
+import { catchError, tap, throwError } from 'rxjs';
 import { TokenResponse, UserLogin, UserRegistration } from './auth.interface';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
@@ -26,7 +26,7 @@ export class AuthService {
   isAuthenticated() : boolean {
     if (!this.accessToken) {
       this.accessToken = this.cookie.get('accessToken');
-      this.refreshToken = this.cookie.get('refreshToken');
+      // this.refreshToken = this.cookie.get('refreshToken');
     }
     return !!this.accessToken;
   }
@@ -61,6 +61,19 @@ export class AuthService {
     );
   }
 
+  // refreshAuthToken() {
+  //   return this.http.post<TokenResponse>(`${this.apiUrl}token/refresh/`, { 
+  //     refresh: this.refreshToken
+  //   }).pipe(
+  //     tap(
+  //       res => this.saveTokens(res)
+  //     ),
+  //     catchError(err => {
+  //       this.logout();
+  //       return throwError(() => err);
+  //     })
+  //   )
+  // }
 
 
   logout() {
@@ -75,11 +88,11 @@ export class AuthService {
   }
 
   saveTokens(res: TokenResponse) {
-    this.accessToken = res.access;
-    this.refreshToken = res.refresh;
+    this.accessToken = res.access_token;
+    // this.refreshToken = res.refresh;
 
     this.cookie.set('accessToken', this.accessToken);
-    this.cookie.set('refreshToken', this.refreshToken);
+    // this.cookie.set('refreshToken', this.refreshToken);
   }
 
 }

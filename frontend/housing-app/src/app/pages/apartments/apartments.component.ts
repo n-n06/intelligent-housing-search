@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApartmentsService } from '../../services/apartments.service';
 import { Apartment } from '../../models/apartment.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -12,9 +13,20 @@ import { Apartment } from '../../models/apartment.model';
 })
 export class ApartmentsComponent {
   apartments: Apartment[] = [];
+  region!: string;
+  listingType!: 'rent' | 'sell';
 
-  constructor(private apartmentsService: ApartmentsService) {
-    this.apartmentsService.getApartments()
-      .subscribe(data => this.apartments = data);
+  constructor(
+    private route: ActivatedRoute,
+    private apartmentsService: ApartmentsService
+  ) {}
+
+  ngOnInit() {
+    this.region = this.route.snapshot.paramMap.get('region')!;
+    this.listingType = this.route.snapshot.data['type'];
+
+    this.apartmentsService
+      .getApartments(this.region, this.listingType)
+      .subscribe(data => (this.apartments = data));
   }
 }

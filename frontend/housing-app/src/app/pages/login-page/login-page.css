@@ -19,11 +19,11 @@
 
 .login-h1 {
     font-size: 40px;
-    color: #335c67;
+    color: var(--accent);
 }
 
 .login-h2 {
-    color: #335c67;
+    color: var(--accent);
 }
 
 
@@ -48,19 +48,19 @@
 .login-button {
     cursor: pointer;
     font-size: 24px;
-    background-color: var(--primary);
+    background-color: var(--accent);
+    color: var(--white);
     margin: 20px 0;
     width: 240px;
     border-radius: 12px;
     padding: 12px;
-    transition: all 0.1s ease-in-out;
+    transition: all 0.2s ease;
     border: 1px solid var(--light-gray);
-    color: var(--black);
 }
 
 .login-button:hover {
-    filter: brightness(70%);
-    border-color: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 36px rgba(99, 102, 241, 0.65);
 }
 
 
@@ -72,13 +72,13 @@ hr {
 
 .register-link {
     text-decoration: none;
-    color: var(--primary);
+    color: var(--accent);
     transition: all 0.1s ease-in-out;
 }
 
 .register-link:hover {
     text-decoration: underline;
-    color: var(--primary-light);
+    color: var(--accent-light);
 }
 
 .login-msg-red {

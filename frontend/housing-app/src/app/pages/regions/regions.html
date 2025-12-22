@@ -1,0 +1,16 @@
+<h1 class="select-h1">Select Region</h1>
+
+<div class="regions-card-cont">
+  @for (region of regions; track $index) {
+    <div
+      class="region-card"
+      (click)="openRegion(region.key)"
+    >
+      <div class="region-card-text">
+        <span>{{ region.name }}</span>
+      </div>
+    </div>
+  }
+</div>
+
+

@@ -1,8 +1,13 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, Response
 from fastapi_users import fastapi_users
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.auth.strategy import get_jwt_strategy
+from src.auth.models import User
 from src.auth.strategy import fastapi_users, auth_backend
 from src.auth.schemas import UserCreate, UserRead, UserUpdate
+from src.auth.dependencies import current_active_user
+from src.db import get_db
 
 auth_router = APIRouter(prefix="/auth", tags=["Auth"])
 

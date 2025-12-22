@@ -7,8 +7,8 @@ export interface Apartment {
     description: string;
     price: number,
     location: {
-      region: string;
-      street: string;
+      region_name: string;
+      address: string;
     };
     complex: string | null;
     photo: string;

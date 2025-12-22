@@ -17,12 +17,12 @@
 }
 
 .reg-h1 {
-    color: #335c67;
+    color: var(--accent);
     font-size: 40px;
 }
 
 .reg-h2 {
-    color: #335c67;
+    color: var(--accent);
 }
 
 .reg-label {
@@ -46,23 +46,21 @@
 .reg-button {
     cursor: pointer;
     font-size: 24px;
-    background-color: var(--primary);
-    color: var(--black);
+    background-color: var(--accent);
+    color: var(--white);
     margin: 20px 0;
     width: 240px;
     border-radius: 12px;
     padding: 12px;
-    transition: all 0.1s ease-in-out;
-    border: 1px solid var(--white);
+    transition: all 0.2s ease;
+    border: 1px solid var(--light-gray);
 }
 
 .reg-button:hover {
-    filter: brightness(70%);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 36px rgba(99, 102, 241, 0.65);
 }
 
-.reg-button:focus {
-    outline: 2px solid var(--dark-shadow);
-}
 
 hr {
     width: 260px;

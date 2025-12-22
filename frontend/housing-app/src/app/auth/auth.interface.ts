@@ -1,6 +1,6 @@
 export interface TokenResponse {
-    access: string,
-    refresh: string
+    access_token: string,
+    token_type: string
 }
 
 export interface UserLogin {

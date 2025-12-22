@@ -8,6 +8,9 @@
     --bg-color: white;
     --light-gray: 	#9a9898;
 
+    --accent: #6366f1;
+    --white: white;
+
     --primary: 	#ddd3d2;
     --primary-light: 	#900100;
     --secondary: #e09f3e;
@@ -19,7 +22,7 @@
     --dark-third: 	#2f3136;
     --dark-shadow: #00000033;
     --black: rgb(15, 14, 18);
-    --white: #000;
+    /* --white: #000; */
     --light-gray: 	#9a9898;
 }
 

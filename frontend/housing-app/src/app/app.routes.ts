@@ -7,6 +7,7 @@ import { HomePage } from './pages/home-page/home-page';
 import { PageNotFound } from './pages/page-not-found/page-not-found';
 import { ApartmentsComponent } from './pages/apartments/apartments.component';
 import { RentOrSellPage } from './pages/rent-or-sell-page/rent-or-sell-page';
+import { RegionsComponent } from './pages/regions/regions';
 
 export const routes: Routes = [
     {
@@ -21,19 +22,40 @@ export const routes: Routes = [
                 path: 'login',
                 component: LoginPage
             },
-            {
-                path: 'select',
-                component: RentOrSellPage,
-                canActivate: [canActivateAuth]
-            },
+            // {
+            //     path: 'select',
+            //     component: RentOrSellPage,
+            //     canActivate: [canActivateAuth]
+            // },
             {
                 path: 'register',
                 component: RegistrationPage
             },
-            {
-                path: 'apartments',
-                component: ApartmentsComponent,
+            { 
+                path: 'regions', 
+                component: RegionsComponent,
                 canActivate: [canActivateAuth]
+            },
+            {
+                path: ':region/select',
+                component: RentOrSellPage,
+                canActivate: [canActivateAuth]
+            },
+            {
+                path: ':region/rent',
+                component: ApartmentsComponent,
+                canActivate: [canActivateAuth],
+                data: {
+                    type: 'rent'
+                }
+            },
+            {
+                path: ':region/sell',
+                component: ApartmentsComponent,
+                canActivate: [canActivateAuth],
+                data: {
+                    type: 'sell'
+                }
             },
             {
                 path: '**',

@@ -11,7 +11,7 @@ from src.auth.models import User
 from src.auth.manager import get_user_manager
 
 
-bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
+bearer_transport = BearerTransport(tokenUrl="auth/login")
 
 
 def get_jwt_strategy() -> JWTStrategy:

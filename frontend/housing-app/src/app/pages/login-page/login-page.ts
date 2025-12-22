@@ -37,7 +37,7 @@ export class LoginPage {
       this.authService.login(this.form.value).subscribe({
         next: (res: any) => {
           this.isLoading = false;
-          this.router.navigate(['']);
+          this.router.navigate(['/regions']);
         },
         error: (err: any) => {
           this.isLoading = false;

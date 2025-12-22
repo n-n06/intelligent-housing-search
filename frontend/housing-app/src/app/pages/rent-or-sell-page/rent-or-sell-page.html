@@ -1,11 +1,11 @@
 <h1 class="select-h1">Select Housing Type</h1>
 
 <div class="select-card-cont">
-    <div class="select-card">
+    <div class="select-card" (click)="redirectToType('sell')">
         <img src="buy.png" alt="" class="select-card-img">
         <div class="select-card-text"><span>Buy</span></div>
     </div>
-    <div class="select-card">
+    <div class="select-card" (click)="redirectToType('rent')">
         <img src="rent.png" alt="" class="select-card-img">
         <div class="select-card-text"><span>Rent</span></div>
     </div>
